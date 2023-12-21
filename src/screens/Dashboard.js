@@ -1,4 +1,13 @@
-import {ActivityIndicator, Dimensions, Image, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Dimensions,
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomHeader from '../components/CustomHeader';
@@ -8,25 +17,85 @@ import ListView from '../components/ListView';
 import Overview from '../components/Overview';
 import {openDatabase} from 'react-native-sqlite-storage';
 import moment from 'moment';
- 
-export default function Dashboard({navigation}) {
-let db = openDatabase({name: 'AppData.db'});
-const [isLoading, setIsLoading] = useState(true);
 
-const [update, setupdate] = useState(0)
-const [expData, setExpData] = useState([])
-const calculation = item => {
-  // console.log('-------------CALCULATIOn', item);
-  setCashIn(item.cashIn);
-  setCashOut(item.cashOut);
-};
-// const [isLoading,setIsLoading]= useState(false)
-useEffect(() => {
-  const sub = navigation.addListener("focus",()=>{
-setIsLoading(true)
+export default function Dashboard({navigation}) {
+  let db = openDatabase({name: 'AppData.db'});
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [update, setupdate] = useState(0);
+  const [expData, setExpData] = useState([]);
+  const calculation = item => {
+    // console.log('-------------CALCULATIOn', item);
+    setCashIn(item.cashIn);
+    setCashOut(item.cashOut);
+  };
+  // const [isLoading,setIsLoading]= useState(false)
+  useEffect(() => {
+    const sub = navigation.addListener('focus', () => {
+      setIsLoading(true);
+      db.transaction(tx => {
+        tx.executeSql('SELECT * FROM Expense', [], (tx, results) => {
+          // console.log('rows00000------  FOCUSSSSS-----------', results.rows.item(0));
+          var tempFrom = [];
+          var tempTo = [];
+          for (let i = 0; i < results.rows.length; ++i) {
+            // if (results.rows.item(i).type == 'from') {
+            //   tempFrom.push(results.rows.item(i));
+            // } else if (results.rows.item(i).type == 'to') {
+            //   tempTo.push(results.rows.item(i));
+            // }
+            tempTo.push(results.rows.item(i));
+            console.log(results.rows.item(i));
+          }
+          const newData = tempTo.reduce((acc, item) => {
+            const existingDate = acc.find(
+              entry =>
+                moment(entry.date).format('YYYY-MM-DD') ===
+                moment(item.dateTime).format('YYYY-MM-DD'),
+            );
+            if (existingDate) {
+              existingDate.children.push(item);
+            } else {
+              acc.push({date: item.dateTime, children: [item]});
+            }
+            return acc;
+          }, []);
+          newData.sort((a, b) => {
+            var dateA = new Date(a.date);
+            var dateB = new Date(b.date);
+            // console.log("-------DATEEEE A-------", dateA, a.date);
+            return dateB - dateA;
+          });
+          let negAmt = 0;
+          let posAmt = 0;
+          newData.map(i => {
+            i.children.map(i2 => {
+              if (i2.cashIn) {
+                posAmt = posAmt + i2.amount;
+              } else {
+                negAmt = negAmt + i2.amount;
+              }
+            });
+          });
+          setExpData(newData);
+          calculation({cashIn: posAmt, cashOut: negAmt});
+          console.log('---------------TEMP DATAAA', tempTo);
+          // setAddressesFrom(tempFrom);
+          // setAddressesTo(tempTo);
+        });
+      });
+      setIsLoading(false);
+    });
+    return () => {
+      sub;
+    };
+  }, [navigation]);
+
+  useEffect(() => {
+    setIsLoading(true);
     db.transaction(tx => {
       tx.executeSql('SELECT * FROM Expense', [], (tx, results) => {
-        // console.log('rows00000------  FOCUSSSSS-----------', results.rows.item(0));
+        // console.log('rows00000-----------------', results.rows.item(0));
         var tempFrom = [];
         var tempTo = [];
         for (let i = 0; i < results.rows.length; ++i) {
@@ -35,101 +104,50 @@ setIsLoading(true)
           // } else if (results.rows.item(i).type == 'to') {
           //   tempTo.push(results.rows.item(i));
           // }
-          tempTo.push(results.rows.item(i))
+          tempTo.push(results.rows.item(i));
           console.log(results.rows.item(i));
         }
         const newData = tempTo.reduce((acc, item) => {
-                  const existingDate = acc.find(entry => moment(entry.date).format("YYYY-MM-DD") === moment(item.dateTime).format("YYYY-MM-DD"));
-                  if (existingDate) {
-                    existingDate.children.push(item);
-                  } else {
-                    acc.push({date: item.dateTime, children: [item]});
-                  }
-                  return acc;
-                }, []);
-                newData.sort((a, b) => {
-                  var dateA = new Date(a.date);
-                  var dateB = new Date(b.date);
-                  // console.log("-------DATEEEE A-------", dateA, a.date);
-                  return dateB - dateA;
-                });
-                let negAmt = 0;
-                let posAmt = 0;
-                newData.map(i => {
-                  i.children.map(i2 => {
-                    if (i2.cashIn) {
-                      posAmt = posAmt + i2.amount;
-                    } else {
-                      negAmt = negAmt + i2.amount;
-                    }
-                  });
-                });
-                setExpData(newData);
-                calculation({cashIn: posAmt, cashOut: negAmt});
-                setIsLoading(false)
-        console.log("---------------TEMP DATAAA", tempTo)
+          const existingDate = acc.find(
+            entry =>
+              moment(entry.date).format('YYYY-MM-DD') ===
+              moment(item.dateTime).format('YYYY-MM-DD'),
+          );
+          if (existingDate) {
+            existingDate.children.push(item);
+          } else {
+            acc.push({date: item.dateTime, children: [item]});
+          }
+          return acc;
+        }, []);
+        // console.log("----------NEW DATE-----------", newData)
+        newData.sort((a, b) => {
+          var dateA = new Date(a.date);
+          var dateB = new Date(b.date);
+          // console.log("-------DATEEEE A-------", dateA, a.date);
+          return dateB - dateA;
+        });
+        let negAmt = 0;
+        let posAmt = 0;
+        newData.map(i => {
+          i.children.map(i2 => {
+            if (i2.cashIn) {
+              posAmt = posAmt + i2.amount;
+            } else {
+              negAmt = negAmt + i2.amount;
+            }
+          });
+        });
+        setExpData(newData);
+        calculation({cashIn: posAmt, cashOut: negAmt});
+
+        console.log('---------------TEMP DATAAA', tempTo);
         // setAddressesFrom(tempFrom);
         // setAddressesTo(tempTo);
       });
     });
-  })
-  return()=>{
-    sub
-  }
-},[navigation]);
-
-useEffect(()=>{
-setIsLoading(true)
-  db.transaction(tx => {
-    tx.executeSql('SELECT * FROM Expense', [], (tx, results) => {
-      // console.log('rows00000-----------------', results.rows.item(0));
-      var tempFrom = [];
-      var tempTo = [];
-      for (let i = 0; i < results.rows.length; ++i) {
-        // if (results.rows.item(i).type == 'from') {
-        //   tempFrom.push(results.rows.item(i));
-        // } else if (results.rows.item(i).type == 'to') {
-        //   tempTo.push(results.rows.item(i));
-        // }
-        tempTo.push(results.rows.item(i))
-        console.log(results.rows.item(i));
-      }
-      const newData = tempTo.reduce((acc, item) => {
-                const existingDate = acc.find(entry => moment(entry.date).format("YYYY-MM-DD") === moment(item.dateTime).format("YYYY-MM-DD"));
-                if (existingDate) {
-                  existingDate.children.push(item);
-                } else {
-                  acc.push({date: item.dateTime, children: [item]});
-                }
-                return acc;
-              }, []);
-              // console.log("----------NEW DATE-----------", newData)
-              newData.sort((a, b) => {
-                var dateA = new Date(a.date);
-                var dateB = new Date(b.date);
-                // console.log("-------DATEEEE A-------", dateA, a.date);
-                return dateB - dateA;
-              });
-              let negAmt = 0;
-              let posAmt = 0;
-              newData.map(i => {
-                i.children.map(i2 => {
-                  if (i2.cashIn) {
-                    posAmt = posAmt + i2.amount;
-                  } else {
-                    negAmt = negAmt + i2.amount;
-                  }
-                });
-              });
-              setExpData(newData);
-              calculation({cashIn: posAmt, cashOut: negAmt});
-              setIsLoading(false)
-      console.log("---------------TEMP DATAAA", tempTo)
-      // setAddressesFrom(tempFrom);
-      // setAddressesTo(tempTo);
-    });
-  })
-},[])
+    setIsLoading(false);
+  }, []);
   const [userData, setUserData] = useState(null);
   const [cashIn, setCashIn] = useState(0);
   const [cashOut, setCashOut] = useState(0);
@@ -145,18 +163,23 @@ setIsLoading(true)
   //   }
   //   console.log('-------userData------------', userData);
   // };
-  
+
   return (
     <View style={{flex: 1}}>
-      {Platform.OS == "ios"?
-    <LinearGradient
-    colors={['#40bcb6', '#248592']}
-    start={{x: 0, y: 0.5}}
-    end={{x: 1, y: 0.5}}
-    locations={[0, 0.8]}
-    style={{height:48}}/>:null  
-    }
-      <CustomHeader navigation={navigation} screen={"dashboard"} title={"Ferish"}/>
+      {Platform.OS == 'ios' ? (
+        <LinearGradient
+          colors={['#40bcb6', '#248592']}
+          start={{x: 0, y: 0.5}}
+          end={{x: 1, y: 0.5}}
+          locations={[0, 0.8]}
+          style={{height: 48}}
+        />
+      ) : null}
+      <CustomHeader
+        navigation={navigation}
+        screen={'dashboard'}
+        title={'Ferish'}
+      />
       {/* {!isLoading && userData ? (
         <Image
           source={{uri: userData.user.photo}}
@@ -321,20 +344,26 @@ setIsLoading(true)
       >
         <Text>DELETE</Text>
       </TouchableOpacity> */}
-      
-      {currentTab == 'List' ? !isLoading ? (
-        <ListView
-          // calculation={item => calculation(item)}
-          expData={expData}
-          navigation={navigation}
-          update={update}
-        />
-      ):
-      <View style={{height:Dimensions.get("window").height/1.5, justifyContent:'center', alignItems:'center', }}>
 
-        <ActivityIndicator size={"large"}/> 
-      </View>
-      : null}
+      {currentTab == 'List' ? (
+        !isLoading ? (
+          <ListView
+            // calculation={item => calculation(item)}
+            expData={expData}
+            navigation={navigation}
+            update={update}
+          />
+        ) : (
+          <View
+            style={{
+              height: Dimensions.get('window').height / 1.5,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <ActivityIndicator size={'large'} />
+          </View>
+        )
+      ) : null}
       {currentTab == 'Overview' ? <Overview /> : null}
     </View>
   );

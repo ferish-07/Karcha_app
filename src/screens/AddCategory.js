@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {openDatabase} from 'react-native-sqlite-storage';
 import {Swipeable, GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Scikey_Color} from '../Utils/common/common';
+import CustomModal from '../components/CustomModal';
 
 export default function AddCategory({navigation}) {
   let db = openDatabase({name: 'AppData.db'});
@@ -30,6 +31,7 @@ export default function AddCategory({navigation}) {
   const [rowRefs, setRowRef] = useState([]);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [categoryValue, setCategoryValue] = useState('');
+  const [visible, setVisible] = useState(false);
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -70,6 +72,7 @@ export default function AddCategory({navigation}) {
     prevOpenedRow = row[index];
   };
   const addCategory = category => {
+    console.log('--------------CATE-GORY-----------------', category);
     db.transaction(function (tx) {
       tx.executeSql(
         'INSERT INTO CategoryMaster (category_name) VALUES (?)',
@@ -253,7 +256,7 @@ export default function AddCategory({navigation}) {
           title={'Add Category'}
           isbackArror={false}
         />
-        <View
+        {/* <View
           style={{
             marginHorizontal: 4,
             flexDirection: 'row',
@@ -281,30 +284,8 @@ export default function AddCategory({navigation}) {
             value={value}
             autoFocus={true}
           />
-          <View
-            style={{
-              width: '10%',
-              justifyContent: 'center',
-              alignItems: 'flex-end',
-            }}>
-            <TouchableOpacity
-              disabled={value == '' ? true : false}
-              style={{
-                backgroundColor: 'green',
-                width: 35,
-                height: 35,
-                // width: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 50,
-              }}
-              onPress={() => {
-                addCategory(value);
-              }}>
-              <Icon name={'add-outline'} size={25} color="white" />
-            </TouchableOpacity>
-          </View>
-        </View>
+         
+        </View> */}
         <View>
           <FlatList
             data={categoryData}
@@ -443,6 +424,44 @@ export default function AddCategory({navigation}) {
             )}
           />
         </View>
+        <View
+          style={{
+            // width: '10%',
+            position: 'absolute',
+
+            justifyContent: 'center',
+            alignItems: 'center',
+            bottom: 10,
+            right: 10,
+            // backgroundColor: 'red',
+          }}>
+          <TouchableOpacity
+            // disabled={value == '' ? true : false}
+            style={{
+              backgroundColor: 'green',
+              width: 50,
+              height: 50,
+              // width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 50,
+            }}
+            onPress={() => {
+              // addCategory(value);
+              // Alert.alert('d');
+              setVisible(true);
+            }}>
+            <Icon name={'add-outline'} size={25} color="white" />
+          </TouchableOpacity>
+        </View>
+        <CustomModal
+          visible={visible}
+          cancelClicked={() => setVisible(!visible)}
+          onSave={category => {
+            addCategory(category);
+            setVisible(!visible);
+          }}
+        />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

@@ -1,6 +1,8 @@
 import {
   Image,
   ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
   StatusBar,
   StyleSheet,
   Text,
@@ -92,107 +94,114 @@ export default function Login({navigation}) {
     }
   }
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-        justifyContent: 'center',
-        // alignItems: 'center',
-      }}>
+    <KeyboardAvoidingView
+      style={{flex: 1}}
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
       <View
-        // source={assets.background}
         style={{
-          // flex: 1,
+          flex: 1,
+          backgroundColor: 'white',
           justifyContent: 'center',
-          // overflow: 'hidden',
-          // opacity: 0.9,
+          // alignItems: 'center',
         }}>
-        <StatusBar translucent backgroundColor="transparent" />
-        <ToastComponent />
         <View
+          // source={assets.background}
           style={{
+            // flex: 1,
             justifyContent: 'center',
-            alignItems: 'center',
+            // overflow: 'hidden',
+            // opacity: 0.9,
           }}>
-          <Image
-            source={assets.instagram_logo}
-            style={{width: 140, height: 140}}
-          />
-        </View>
-        <View style={{marginHorizontal: 10}}>
-          <TextInput
+          <StatusBar translucent backgroundColor="transparent" />
+          <ToastComponent />
+          <View
             style={{
-              borderBottomWidth: 0.5,
-              // borderRadius: 10,
-              padding: 10,
-
-              //   backgroundColor: '#1a2b33',
-            }}
-            onChangeText={t => setUserName(t)}
-            placeholder="Username, email address or mobile number"
-          />
-          {userNameError ? (
-            <>
-              <Text style={{color: 'red'}}>*Username is required</Text>
-            </>
-          ) : null}
-          <TextInput
-            onChangeText={p => setPassword(p)}
-            style={{
-              borderBottomWidth: 0.5,
-              // borderRadius: 10,
-              marginTop: 10,
-              padding: 10,
-            }}
-            placeholder="Password"
-          />
-          {passwordError ? (
-            <>
-              <Text style={{color: 'red'}}>*Password is required</Text>
-            </>
-          ) : null}
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#0062e1',
-              marginTop: 10,
-              borderRadius: 60,
-              padding: 10,
               justifyContent: 'center',
               alignItems: 'center',
-            }}
-            onPress={() => onLoginPressed()}>
-            <View>
-              <Text style={{color: 'black'}}>Login</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            // flex: 0.2,
-          }}>
-          <Text>Don't Have Account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text style={{color: 'blue'}}> Register</Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            justifyContent: 'center',
-            // backgroundColor: 'red',
-            alignItems: 'center',
-            marginTop: 20,
-          }}>
-          <GoogleSigninButton
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-            onPress={() => onGoogleButtonPress()}
-            // disabled={this.state.isSigninInProgress}
-          />
-        </View>
-        {/* <TouchableOpacity
+            }}>
+            <Image
+              source={assets.instagram_logo}
+              style={{width: 140, height: 140}}
+            />
+          </View>
+          <View style={{marginHorizontal: 10}}>
+            <TextInput
+              placeholderTextColor={'grey'}
+              style={{
+                borderBottomWidth: 0.5,
+                // borderRadius: 10,
+                padding: 10,
+
+                //   backgroundColor: '#1a2b33',
+              }}
+              onChangeText={t => setUserName(t)}
+              placeholder="Username, email address or mobile number"
+            />
+            {userNameError ? (
+              <>
+                <Text style={{color: 'red'}}>*Username is required</Text>
+              </>
+            ) : null}
+            <TextInput
+              placeholderTextColor={'grey'}
+              onChangeText={p => setPassword(p)}
+              style={{
+                borderBottomWidth: 0.5,
+                // borderRadius: 10,
+                marginTop: 10,
+                padding: 10,
+              }}
+              placeholder="Password"
+              secureTextEntry={true}
+              // passwor
+            />
+            {passwordError ? (
+              <>
+                <Text style={{color: 'red'}}>*Password is required</Text>
+              </>
+            ) : null}
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#0062e1',
+                marginTop: 10,
+                borderRadius: 60,
+                padding: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={() => onLoginPressed()}>
+              <View>
+                <Text style={{color: 'black'}}>Login</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              // flex: 0.2,
+            }}>
+            <Text>Don't Have Account?</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+              <Text style={{color: 'blue'}}> Register</Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+              // backgroundColor: 'red',
+              alignItems: 'center',
+              marginTop: 20,
+            }}>
+            <GoogleSigninButton
+              size={GoogleSigninButton.Size.Wide}
+              color={GoogleSigninButton.Color.Dark}
+              onPress={() => onGoogleButtonPress()}
+              // disabled={this.state.isSigninInProgress}
+            />
+          </View>
+          {/* <TouchableOpacity
           onPress={async () => {
             const confirm = await auth().signInWithPhoneNumber(
               '+91 6353570700',
@@ -201,8 +210,9 @@ export default function Login({navigation}) {
           }}>
           <Text>SIGn in with Phone</Text>
         </TouchableOpacity> */}
+        </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

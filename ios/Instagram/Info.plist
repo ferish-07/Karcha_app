@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Instagram</string>
+	<string>Transaction</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -20,6 +20,18 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.908743156975-v5ml0dfindpkp93v9hdi6o1d7hps180a</string>
+				<string>com.googleusercontent.apps.908743156975-iirv1ueuu5t5r272h7fa3jv49kqck0hi</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -37,19 +49,19 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-	</array>
 	<key>UIAppFonts</key>
-	<array>		
+	<array>
 		<string>Fonts/FontAwesome.ttf</string>
 		<string>Fonts/Ionicons.ttf</string>
 		<string>Fonts/Foundation.ttf</string>
 		<string>Fonts/MaterialCommunityIcons.ttf</string>
 		<string>Fonts/MaterialIcons.ttf</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
@@ -59,18 +71,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CFBundleURLTypes</key>
-<array>
-    <dict>
-        <key>CFBundleTypeRole</key>
-        <string>Editor</string>
-        <key>CFBundleURLSchemes</key>
-        <array>
-            <!-- TODO Replace this value: -->
-            <!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
-            <string>com.googleusercontent.apps.908743156975-v5ml0dfindpkp93v9hdi6o1d7hps180a</string>
-        </array>
-    </dict>
-</array>
 </dict>
 </plist>

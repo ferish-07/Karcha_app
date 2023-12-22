@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>908743156975-v5ml0dfindpkp93v9hdi6o1d7hps180a.apps.googleusercontent.com</string>
+	<string>908743156975-iirv1ueuu5t5r272h7fa3jv49kqck0hi.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.908743156975-v5ml0dfindpkp93v9hdi6o1d7hps180a</string>
+	<string>com.googleusercontent.apps.908743156975-iirv1ueuu5t5r272h7fa3jv49kqck0hi</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>908743156975-f277rqgs65u92o2o96i3dutbifmrurdq.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.instagram.dev</string>
+	<string>org.reactjs.native.example.Jugnoo</string>
 	<key>PROJECT_ID</key>
 	<string>instagram-85307</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:908743156975:ios:fbd4cc6d10ceef4a13271a</string>
+	<string>1:908743156975:ios:95a27775561b9e2113271a</string>
 </dict>
 </plist>

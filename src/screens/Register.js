@@ -6,6 +6,8 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import React, {useState} from 'react';
 import {assets} from '../Utils/assets/Index';
@@ -54,89 +56,98 @@ export default function Register() {
     }
   };
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-      <ToastComponent />
+    <KeyboardAvoidingView
+      style={{flex: 1}}
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
+      <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+        <ToastComponent />
 
-      <View style={{flex: 1, justifyContent: 'center'}}>
-        <View
-          style={{
-            width: '100%',
-            height: '20%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Image
-            source={assets.instagram_logo}
-            style={{width: 140, height: 140}}
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <View
+            style={{
+              width: '100%',
+              height: '20%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Image
+              source={assets.instagram_logo}
+              style={{width: 140, height: 140}}
+            />
+          </View>
+        </View>
+        <View style={{flex: 1, marginHorizontal: 20}}>
+          <TextInput
+            onChangeText={p => setUserName(p)}
+            style={{
+              borderWidth: 0.5,
+              borderRadius: 10,
+              marginTop: 10,
+              padding: 10,
+            }}
+            placeholder="User Name"
+            placeholderTextColor={'grey'}
+          />
+          <TextInput
+            onChangeText={p => setEmail(p)}
+            style={{
+              borderWidth: 0.5,
+              borderRadius: 10,
+              marginTop: 10,
+              padding: 10,
+            }}
+            placeholder="Email"
+            placeholderTextColor={'grey'}
+          />
+          <TextInput
+            onChangeText={p => setPassword(p)}
+            style={{
+              borderWidth: 0.5,
+              borderRadius: 10,
+              marginTop: 10,
+              padding: 10,
+            }}
+            placeholder="Password"
+            placeholderTextColor={'grey'}
+            secureTextEntry={true}
+          />
+          <TextInput
+            onChangeText={p => setConfirmPassword(p)}
+            style={{
+              borderWidth: 0.5,
+              borderRadius: 10,
+              marginTop: 10,
+              padding: 10,
+            }}
+            placeholder="Confirm Password"
+            placeholderTextColor={'grey'}
           />
         </View>
-      </View>
-      <View style={{flex: 1, marginHorizontal: 20}}>
-        <TextInput
-          onChangeText={p => setUserName(p)}
+        <View
           style={{
-            borderWidth: 0.5,
-            borderRadius: 10,
-            marginTop: 10,
-            padding: 10,
-          }}
-          placeholder="User Name"
-        />
-        <TextInput
-          onChangeText={p => setEmail(p)}
-          style={{
-            borderWidth: 0.5,
-            borderRadius: 10,
-            marginTop: 10,
-            padding: 10,
-          }}
-          placeholder="Email"
-        />
-        <TextInput
-          onChangeText={p => setPassword(p)}
-          style={{
-            borderWidth: 0.5,
-            borderRadius: 10,
-            marginTop: 10,
-            padding: 10,
-          }}
-          placeholder="Password"
-        />
-        <TextInput
-          onChangeText={p => setConfirmPassword(p)}
-          style={{
-            borderWidth: 0.5,
-            borderRadius: 10,
-            marginTop: 10,
-            padding: 10,
-          }}
-          placeholder="Confirm Password"
-        />
-      </View>
-      <View
-        style={{
-          flex: 1,
-          //   backgroundColor: 'red',
-          justifyContent: 'center',
-          marginHorizontal: 20,
-          //   alignItems: 'center',
-        }}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: '#0062e1',
-            marginTop: 10,
-            borderRadius: 60,
-            padding: 10,
+            flex: 1,
+            //   backgroundColor: 'red',
             justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onPress={() => onRegister()}>
-          <View>
-            <Text style={{color: 'black'}}>Register</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+            marginHorizontal: 20,
+            //   alignItems: 'center',
+          }}>
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#0062e1',
+              marginTop: 10,
+              borderRadius: 60,
+              padding: 10,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={() => onRegister()}>
+            <View>
+              <Text style={{color: 'black'}}>Register</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }
 

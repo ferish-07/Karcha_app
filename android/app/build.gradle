@@ -147,17 +147,17 @@ android {
   QA {
     dimension "tier"
     applicationIdSuffix ".qa"
-    resValue "string", "app_name", "Instagram qa"
+    resValue "string", "app_name", "Transaction qa"
   }
   DEV {
     dimension "tier"
     applicationIdSuffix ".dev"
-    resValue "string", "app_name", "Instagram dev"
+    resValue "string", "app_name", "Transaction dev"
   }
    PROD {
     dimension "tier"
     applicationIdSuffix ".prod"
-    resValue "string", "app_name", "Instagram"
+    resValue "string", "app_name", "Transaction"
   }
 }
 
@@ -198,3 +198,4 @@ dependencies {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

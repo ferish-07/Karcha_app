@@ -249,6 +249,7 @@ export default function AddCategory({navigation}) {
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <KeyboardAvoidingView
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}
         keyboardVerticalOffset={isKeyboardVisible ? 1 : 80}>
         <CustomHeader
           navigation={navigation}
@@ -342,7 +343,9 @@ export default function AddCategory({navigation}) {
                       }}
                       editable={item.isEdited ? true : false}
                       multiline
-                      autoFocus={true}
+                      scrollEnabled={false}
+                      // autoFocus={true}
+                      // numberOfLines={2}
                       style={{fontSize: 18}}
                     />
                     {item.isEdited ? (

@@ -32,6 +32,7 @@ export default function CustomModal({visible, cancelClicked, onSave}) {
         </View>
         <TextInput
           placeholder="Category"
+          placeholderTextColor={'grey'}
           style={{
             width: '90%',
             // borderBottomColor: 'grey',

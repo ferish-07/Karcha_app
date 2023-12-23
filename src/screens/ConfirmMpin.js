@@ -6,12 +6,15 @@ import {
   Image,
   FlatList,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import ToastComponent from '../components/ToastComponent';
 import {ToastMsg} from '../Utils/common/common';
 import {assets} from '../Utils/assets/Index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from '../components/Toast';
 export default function ConfirmMpin({route, navigation}) {
+  const toastRef = useRef();
+
   const {screen, setPin} = route.params;
   console.log('PARAMMSSSSSSS', screen, setPin);
   const pinMatri = [
@@ -62,7 +65,11 @@ export default function ConfirmMpin({route, navigation}) {
             routes: [{name: 'Drawer'}],
           });
         } else {
-          ToastMsg('Wrong Mpin', 'error');
+          toastRef.current.show({
+            type: 'error',
+            text: 'wrong mpin',
+            duration: 2000,
+          });
         }
       }
     }
@@ -78,17 +85,18 @@ export default function ConfirmMpin({route, navigation}) {
         backgroundColor: 'white',
         justifyContent: 'center',
       }}>
-      <View style={{zIndex: 2, margin: 0}}>
-        <ToastComponent />
-      </View>
+      {/* <View style={{margin: 0}}> */}
+      <Toast ref={toastRef} />
+
+      {/* </View> */}
       <View
         style={{
           justifyContent: 'center',
           alignItems: 'center',
         }}>
         <Image
-          source={assets.instagram_logo}
-          style={{width: 140, height: 140}}
+          source={assets.splashWallet}
+          style={{width: 120, height: 120, tintColor: 'red'}}
         />
       </View>
       <View
@@ -114,14 +122,13 @@ export default function ConfirmMpin({route, navigation}) {
               <View
                 style={{
                   backgroundColor:
-                    pinArray.length - 1 >= index ? 'lightblue' : 'white',
+                    pinArray.length - 1 >= index ? 'red' : 'white',
                   height: 20,
                   width: 20,
                   margin: 10,
                   borderWidth: 1,
                   borderRadius: 10,
-                  borderColor:
-                    pinArray.length - 1 >= index ? 'lightblue' : 'black',
+                  borderColor: pinArray.length - 1 >= index ? 'red' : 'black',
                 }}
               />
             );
@@ -135,12 +142,12 @@ export default function ConfirmMpin({route, navigation}) {
                   return (
                     <TouchableOpacity
                       style={{
-                        marginHorizontal: 30,
-                        marginVertical: 10,
+                        marginHorizontal: 20,
+                        marginVertical: 5,
                         // padding: 0,
                         borderRadius: 20,
-                        width: 80,
-                        height: 80,
+                        width: 70,
+                        height: 70,
                         justifyContent: 'center',
                         alignItems: 'center',
                         borderWidth: 0.5,

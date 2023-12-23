@@ -250,7 +250,7 @@ export default function AddCategory({navigation}) {
       <KeyboardAvoidingView
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}
-        keyboardVerticalOffset={isKeyboardVisible ? 1 : 80}>
+        keyboardVerticalOffset={isKeyboardVisible ? 1 : 15}>
         <CustomHeader
           navigation={navigation}
           screen={'normal'}

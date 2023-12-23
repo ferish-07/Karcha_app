@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomHeader from '../components/CustomHeader';
 import LinearGradient from 'react-native-linear-gradient';
@@ -17,8 +17,10 @@ import ListView from '../components/ListView';
 import Overview from '../components/Overview';
 import {openDatabase} from 'react-native-sqlite-storage';
 import moment from 'moment';
+import Toast from '../components/Toast';
 
 export default function Dashboard({navigation}) {
+  const toastRef = useRef();
   let db = openDatabase({name: 'AppData.db'});
   const [isLoading, setIsLoading] = useState(true);
 
@@ -180,6 +182,7 @@ export default function Dashboard({navigation}) {
         screen={'dashboard'}
         title={'Ferish'}
       />
+      <Toast ref={toastRef} />
       {/* {!isLoading && userData ? (
         <Image
           source={{uri: userData.user.photo}}

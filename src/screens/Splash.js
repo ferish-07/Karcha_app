@@ -31,7 +31,7 @@ export default function Splash({navigation}) {
   return (
     <View
       style={{
-        backgroundColor: 'black',
+        backgroundColor: 'red',
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -45,21 +45,10 @@ export default function Splash({navigation}) {
           alignItems: 'center',
         }}>
         <Image
-          source={assets.instagram_logo}
-          style={{width: 140, height: 140}}
+          source={assets.splashWallet}
+          style={{width: 140, height: 140, tintColor: 'white'}}
         />
-      </View>
-      <View
-        style={{
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          // backgroundColor: 'red',
-          // flex: 0.25,
-        }}>
-        <Text style={{color: 'grey'}}>From</Text>
-        <View style={{}}>
-          <Image source={assets.meta_logo} resizeMode="center" style={{}} />
-        </View>
+        <Text style={{fontSize: 22, color: 'white'}}>Transaction Book</Text>
       </View>
     </View>
   );

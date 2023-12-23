@@ -11,6 +11,7 @@ import ConfirmMpin from '../screens/ConfirmMpin';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import ValueEntry from './ValueEntry';
 import AddCategory from '../screens/AddCategory';
+import CustomSidebarMenu from './CustomSidebarMenu';
 
 export default function Route() {
   const Stack = createNativeStackNavigator();
@@ -19,10 +20,11 @@ export default function Route() {
 
   const DrawerNavigation = () => {
     return (
-      <Drawer.Navigator screenOptions={{headerShown: false}}>
+      <Drawer.Navigator
+        screenOptions={{headerShown: false}}
+        drawerContent={props => <CustomSidebarMenu {...props} />}>
         <Drawer.Screen name="Dashboard" component={Dashboard} />
         <Drawer.Screen name="Category" component={AddCategory} />
-
       </Drawer.Navigator>
     );
   };

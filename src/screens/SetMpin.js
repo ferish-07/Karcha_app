@@ -65,8 +65,8 @@ export default function SetMpin({navigation}) {
           alignItems: 'center',
         }}>
         <Image
-          source={assets.instagram_logo}
-          style={{width: 140, height: 140}}
+          source={assets.splashWallet}
+          style={{width: 120, height: 120, tintColor: 'red'}}
         />
       </View>
       <View
@@ -89,14 +89,13 @@ export default function SetMpin({navigation}) {
               <View
                 style={{
                   backgroundColor:
-                    pinArray.length - 1 >= index ? 'lightblue' : 'white',
+                    pinArray.length - 1 >= index ? 'red' : 'white',
                   height: 20,
                   width: 20,
                   margin: 10,
                   borderWidth: 1,
                   borderRadius: 10,
-                  borderColor:
-                    pinArray.length - 1 >= index ? 'lightblue' : 'black',
+                  borderColor: pinArray.length - 1 >= index ? 'red' : 'black',
                 }}
               />
             );
@@ -110,12 +109,12 @@ export default function SetMpin({navigation}) {
                   return (
                     <TouchableOpacity
                       style={{
-                        marginHorizontal: 30,
-                        marginVertical: 10,
+                        marginHorizontal: 20,
+                        marginVertical: 5,
                         // padding: 0,
                         borderRadius: 20,
-                        width: 80,
-                        height: 80,
+                        width: 70,
+                        height: 70,
                         justifyContent: 'center',
                         alignItems: 'center',
                         borderWidth: 0.5,

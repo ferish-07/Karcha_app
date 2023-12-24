@@ -103,7 +103,7 @@ const Toast = forwardRef(({}, ref) => {
   return (
     <>
       {showing && (
-        <GestureHandlerRootView>
+        <GestureDetector gesture={pan}>
           <Animated.View
             style={[
               styles.toastContainer,
@@ -136,7 +136,7 @@ const Toast = forwardRef(({}, ref) => {
               {toastText}
             </Text>
           </Animated.View>
-        </GestureHandlerRootView>
+        </GestureDetector>
       )}
     </>
   );

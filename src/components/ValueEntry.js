@@ -16,6 +16,7 @@ import Icon2 from 'react-native-vector-icons/MaterialIcons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import {openDatabase} from 'react-native-sqlite-storage';
+import SelectType from './SelectType';
 
 export default function ValueEntry({route, navigation}) {
   const {cashIn, isEdit, item} = route.params;
@@ -306,6 +307,7 @@ export default function ValueEntry({route, navigation}) {
           </View>
         </TouchableOpacity>
       </View>
+      <SelectType />
     </SafeAreaView>
   );
 }

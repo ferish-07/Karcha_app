@@ -17,7 +17,8 @@ import React, {useEffect, useRef, useState} from 'react';
 import CustomHeader from '../components/CustomHeader';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {openDatabase} from 'react-native-sqlite-storage';
-import {Swipeable, GestureHandlerRootView} from 'react-native-gesture-handler';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Scikey_Color} from '../Utils/common/common';
 import CustomModal from '../components/CustomModal';
 
@@ -245,6 +246,9 @@ export default function AddCategory({navigation}) {
       </View>
     );
   };
+
+  const ListItem = ({item, index}) => {};
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <KeyboardAvoidingView
@@ -287,146 +291,153 @@ export default function AddCategory({navigation}) {
           />
          
         </View> */}
-        <View>
-          <FlatList
-            data={categoryData}
-            extraData={refreshView}
-            style={{marginTop: 8, marginHorizontal: 8, height: '92%'}}
-            renderItem={({item, index}) => (
-              <View>
-                <Swipeable
+        {/* <View> */}
+
+        <FlatList
+          data={categoryData}
+          extraData={refreshView}
+          style={{marginTop: 8, marginHorizontal: 8, height: '92%'}}
+          renderItem={({item, index}) => (
+            <Swipeable
+              ref={ref => {
+                row[index] = ref;
+                // rowRefs.push(row[index]);
+              }}
+              renderLeftActions={() => renderLeftActions(item, index)}
+              renderRightActions={() => renderRightActions(item, index)}
+              // friction={1}
+              leftThreshold={-10}
+              rightThreshold={-10}>
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  // borderWidth: 1,
+
+                  padding: 10,
+                  marginTop: 10,
+                  borderRadius: 5,
+                  borderLeftColor: Scikey_Color[index % Scikey_Color.length],
+                  // shadowRadius: 5,
+                  // shadowOpacity: 0.8,
+                  elevation: 1,
+                  // shadowOffset: {
+                  //   width: 1,
+                  //   height: 3,
+                  // },
+                  borderLeftWidth: 5,
+                  // shadowColor: index % 2 == 0 ? 'red' : 'green',
+                  // borderRightColor: index % 2 == 0 ? '#cddee6' : '#e2e2e2',
+                  // borderTopColor: index % 2 == 0 ? '#cddee6' : '#e2e2e2',
+                  // borderBottomColor: index % 2 == 0 ? '#cddee6' : '#e2e2e2',
+                  borderLeftWidth: 5,
+                  // paddingBottom: 30,
+                  // justifyContent: 'center',
+                  // alignSelf: 'center',
+                }}>
+                <TextInput
                   ref={ref => {
-                    row[index] = ref;
-                    // rowRefs.push(row[index]);
+                    textInputRef[index] = ref;
                   }}
-                  renderLeftActions={() => renderLeftActions(item, index)}
-                  renderRightActions={() => renderRightActions(item, index)}
-                  leftThreshold={-10}
-                  rightThreshold={-10}>
+                  // onBlur={() => textInputRef[index].blur()}
+
+                  value={item.category_name}
+                  onChangeText={text => {
+                    categoryData.map(i => {
+                      if (item.id == i.id) {
+                        item.category_name = text;
+                      }
+                    });
+                    setCategoryValue(text);
+                    setRefreshView(refreshView + 1);
+                  }}
+                  editable={item.isEdited ? true : false}
+                  multiline
+                  scrollEnabled={false}
+                  autoFocus={true}
+                  // numberOfLines={2}
+                  style={{
+                    fontSize: 18,
+                    // backgroundColor: 'red',/
+                    paddingVertical: 0,
+                    color: 'black',
+                  }}
+                />
+                {item.isEdited ? (
                   <View
                     style={{
-                      backgroundColor: 'white',
-                      // borderWidth: 1,
-                      padding: 10,
-                      marginTop: 10,
-                      borderRadius: 5,
-                      borderLeftColor:
-                        Scikey_Color[index % Scikey_Color.length],
-                      shadowRadius: 5,
-                      shadowOpacity: 0.8,
-                      elevation: 2,
-                      shadowOffset: {
-                        width: 1,
-                        height: 3,
-                      },
-                      borderLeftWidth: 5,
-                      shadowColor: index % 2 == 0 ? '#9db8cd' : '#cccccc',
-                      borderRightColor: index % 2 == 0 ? '#cddee6' : '#e2e2e2',
-                      borderTopColor: index % 2 == 0 ? '#cddee6' : '#e2e2e2',
-                      borderBottomColor: index % 2 == 0 ? '#cddee6' : '#e2e2e2',
-                      borderLeftWidth: 5,
-                    }}>
-                    <TextInput
-                      ref={ref => {
-                        textInputRef[index] = ref;
-                      }}
-                      // onBlur={() => textInputRef[index].blur()}
-                      value={item.category_name}
-                      onChangeText={text => {
-                        categoryData.map(i => {
-                          if (item.id == i.id) {
-                            item.category_name = text;
-                          }
-                        });
-                        setCategoryValue(text);
-                        setRefreshView(refreshView + 1);
-                      }}
-                      editable={item.isEdited ? true : false}
-                      multiline
-                      scrollEnabled={false}
-                      // autoFocus={true}
-                      // numberOfLines={2}
-                      style={{fontSize: 18}}
-                    />
-                    {item.isEdited ? (
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-end',
 
-                          // alignItems: 'flex-end',
+                      // alignItems: 'flex-end',
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        width: '40%',
+                        justifyContent: 'space-evenly',
+                      }}>
+                      <TouchableOpacity
+                        style={{
+                          padding: 5,
+                          borderWidth: 0.5,
+                          borderColor: 'black',
+                          borderRadius: 5,
+                          // backgroundColor: 'red',
+                        }}
+                        onPress={() => {
+                          categoryData.map(i => {
+                            if (i.id == item.id) {
+                              i.isEdited = false;
+                            }
+                          });
+                          setRefreshView(refreshView + 1);
                         }}>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            width: '40%',
-                            justifyContent: 'space-evenly',
-                          }}>
-                          <TouchableOpacity
-                            style={{
-                              padding: 5,
-                              borderWidth: 0.5,
-                              borderColor: 'black',
-                              borderRadius: 5,
-                              // backgroundColor: 'red',
-                            }}
-                            onPress={() => {
-                              categoryData.map(i => {
-                                if (i.id == item.id) {
-                                  i.isEdited = false;
-                                }
-                              });
-                              setRefreshView(refreshView + 1);
-                            }}>
-                            <Text>Cancel</Text>
-                          </TouchableOpacity>
-                          <TouchableOpacity
-                            style={{
-                              padding: 5,
-                              borderWidth: 0.5,
-                              borderColor: 'black',
-                              borderRadius: 5,
-                              backgroundColor: 'green',
-                            }}
-                            onPress={() => {
-                              Alert.alert(
-                                'Alert',
-                                'Are You sure u want to change the Category?',
-                                [
-                                  {
-                                    text: 'Cancel',
-                                    onPress: () => {
-                                      categoryData.map(i => {
-                                        if (i.id == item.id) {
-                                          i.isEdited = false;
-                                        }
-                                      });
-                                      setRefreshView(refreshView + 1);
-                                    },
-                                  },
-                                  {
-                                    text: 'Ok',
-                                    onPress: () => {
-                                      updateCategory(
-                                        item.category_name,
-                                        item.id,
-                                      );
-                                    },
-                                  },
-                                ],
-                              );
-                            }}>
-                            <Text style={{color: 'white'}}>Save</Text>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                    ) : null}
+                        <Text>Cancel</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{
+                          padding: 5,
+                          borderWidth: 0.5,
+                          borderColor: 'black',
+                          borderRadius: 5,
+                          backgroundColor: 'green',
+                        }}
+                        onPress={() => {
+                          Alert.alert(
+                            'Alert',
+                            'Are You sure u want to change the Category?',
+                            [
+                              {
+                                text: 'Cancel',
+                                onPress: () => {
+                                  categoryData.map(i => {
+                                    if (i.id == item.id) {
+                                      i.isEdited = false;
+                                    }
+                                  });
+                                  setRefreshView(refreshView + 1);
+                                },
+                              },
+                              {
+                                text: 'Ok',
+                                onPress: () => {
+                                  updateCategory(item.category_name, item.id);
+                                },
+                              },
+                            ],
+                          );
+                        }}>
+                        <Text style={{color: 'white'}}>Save</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                </Swipeable>
+                ) : null}
               </View>
-            )}
-          />
-        </View>
+            </Swipeable>
+          )}
+        />
+
+        {/* </View> */}
         <View
           style={{
             // width: '10%',

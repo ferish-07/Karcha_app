@@ -12,6 +12,7 @@ import {ToastMsg} from '../Utils/common/common';
 import {assets} from '../Utils/assets/Index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from '../components/Toast';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 export default function ConfirmMpin({route, navigation}) {
   const toastRef = useRef();
 
@@ -32,45 +33,62 @@ export default function ConfirmMpin({route, navigation}) {
       if (item == 'c') {
         pinArray.pop();
       } else {
+        console.log('hrrtrrr');
         pinArray.push(item);
+
+        if (pinArray.length == 4) {
+          console.log(
+            '4444444444444444444444444444444444444444444444444444',
+            setPin,
+            pinArray,
+          );
+          // pinArray.push(item);
+
+          if (screen == 'ConfirmMpin') {
+            if (setPin.join('') == pinArray.join('')) {
+              setPinArray([]);
+              AsyncStorage.setItem('MPIN', pinArray.join(''));
+              navigation.reset({
+                index: 0,
+                routes: [{name: 'Drawer'}],
+              });
+            } else {
+              // ToastMsg("Mpin doesn't Match", 'error');
+              setTimeout(() => {
+                toastRef.current.show({
+                  type: 'error',
+                  text: `Mpin doesn't Match`,
+                  duration: 2000,
+                });
+              }, 500);
+            }
+          } else if (screen == 'LoginWithMpin') {
+            let MPIN_FROM_ASYNC = await AsyncStorage.getItem('MPIN');
+            console.log('MPIN_FROM_ASYNC', MPIN_FROM_ASYNC);
+            if (MPIN_FROM_ASYNC == pinArray.join('')) {
+              navigation.reset({
+                index: 0,
+                routes: [{name: 'Drawer'}],
+              });
+            } else {
+              console.log('wrong mpinnnnnnnnn');
+              setTimeout(() => {
+                toastRef.current.show({
+                  type: 'error',
+                  text: 'INCORRECT M-PIN',
+                  duration: 2000,
+                });
+                setPinArray([]);
+              }, 500);
+            }
+          }
+        }
       }
     } else {
       if (item == 'c') {
         pinArray.pop();
-      }
-    }
-    if (pinArray.length > 3) {
-      console.log(
-        '4444444444444444444444444444444444444444444444444444',
-        setPin,
-        pinArray,
-      );
-      if (screen == 'ConfirmMpin') {
-        if (setPin.join('') == pinArray.join('')) {
-          setPinArray([]);
-          AsyncStorage.setItem('MPIN', pinArray.join(''));
-          navigation.reset({
-            index: 0,
-            routes: [{name: 'Drawer'}],
-          });
-        } else {
-          ToastMsg("Mpin doesn't Match", 'error');
-        }
-      } else if (screen == 'LoginWithMpin') {
-        let MPIN_FROM_ASYNC = await AsyncStorage.getItem('MPIN');
-        console.log('MPIN_FROM_ASYNC', MPIN_FROM_ASYNC);
-        if (MPIN_FROM_ASYNC == pinArray.join('')) {
-          navigation.reset({
-            index: 0,
-            routes: [{name: 'Drawer'}],
-          });
-        } else {
-          toastRef.current.show({
-            type: 'error',
-            text: 'wrong mpin',
-            duration: 2000,
-          });
-        }
+      } else {
+        // pinArray.push(item);
       }
     }
 
@@ -122,13 +140,13 @@ export default function ConfirmMpin({route, navigation}) {
               <View
                 style={{
                   backgroundColor:
-                    pinArray.length - 1 >= index ? 'red' : 'white',
+                    pinArray.length >= index + 1 ? 'red' : 'white',
                   height: 20,
                   width: 20,
                   margin: 10,
                   borderWidth: 1,
                   borderRadius: 10,
-                  borderColor: pinArray.length - 1 >= index ? 'red' : 'black',
+                  borderColor: pinArray.length >= index + 1 ? 'red' : 'black',
                 }}
               />
             );

@@ -12,14 +12,15 @@ import Route from './src/components/Route';
 import NotificationService from './src/components/NotificationService';
 import BackgroudNotification from './src/components/BackgroudNotification';
 import SqlLite from './src/components/SqlLite';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 export default function App() {
   return (
-    <>
+    <GestureHandlerRootView style={{flex: 1}}>
       <Route />
       <NotificationService />
-      <SqlLite/>
-    </>
+      <SqlLite />
+    </GestureHandlerRootView>
   );
 }
 

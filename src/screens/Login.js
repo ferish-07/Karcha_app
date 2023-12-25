@@ -120,8 +120,8 @@ export default function Login({navigation}) {
               alignItems: 'center',
             }}>
             <Image
-              source={assets.instagram_logo}
-              style={{width: 140, height: 140}}
+              source={assets.splashWallet}
+              style={{width: 120, height: 120, tintColor: 'red'}}
             />
           </View>
           <View style={{marginHorizontal: 10}}>
@@ -135,7 +135,7 @@ export default function Login({navigation}) {
                 //   backgroundColor: '#1a2b33',
               }}
               onChangeText={t => setUserName(t)}
-              placeholder="Username, email address or mobile number"
+              placeholder="Email address"
             />
             {userNameError ? (
               <>
@@ -163,7 +163,7 @@ export default function Login({navigation}) {
             <TouchableOpacity
               style={{
                 backgroundColor: '#0062e1',
-                marginTop: 10,
+                marginTop: 20,
                 borderRadius: 60,
                 padding: 10,
                 justifyContent: 'center',
@@ -171,7 +171,7 @@ export default function Login({navigation}) {
               }}
               onPress={() => onLoginPressed()}>
               <View>
-                <Text style={{color: 'black'}}>Login</Text>
+                <Text style={{color: 'white', fontSize: 18}}>Login</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -195,8 +195,8 @@ export default function Login({navigation}) {
               marginTop: 20,
             }}>
             <GoogleSigninButton
-              size={GoogleSigninButton.Size.Wide}
-              color={GoogleSigninButton.Color.Dark}
+              size={GoogleSigninButton.Size.Icon}
+              color={GoogleSigninButton.Color.Light}
               onPress={() => onGoogleButtonPress()}
               // disabled={this.state.isSigninInProgress}
             />

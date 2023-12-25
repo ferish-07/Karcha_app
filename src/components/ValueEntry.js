@@ -20,6 +20,7 @@ import SelectType from './SelectType';
 
 export default function ValueEntry({route, navigation}) {
   const {cashIn, isEdit, item} = route.params;
+  const [visible, setvisible] = useState(true);
 
   const [typeFocused, setTypeFocused] = useState(true);
   const [amtFocus, setAmtFocus] = useState(false);
@@ -115,12 +116,11 @@ export default function ValueEntry({route, navigation}) {
               color={cashIn ? '#45bd36' : '#da2a1a'}
             />
           </View>
-          <TextInput
-            placeholder="Type"
-            placeholderTextColor={'grey'}
+
+          <TouchableOpacity
             style={{
               borderBottomWidth: 1,
-              borderBottomColor: typeFocused
+              borderBottomColor: calendarFocus
                 ? cashIn
                   ? '#45bd36'
                   : '#da2a1a'
@@ -128,16 +128,19 @@ export default function ValueEntry({route, navigation}) {
               width: '90%',
               marginLeft: 8,
               padding: 5,
+              flexDirection: 'row',
             }}
-            onFocus={() => {
+            onPress={() => {
               setTypeFocused(true);
               setAmtFocus(false);
               setNoteFocus(false);
               setCalendarFocus(false);
-            }}
-            onChangeText={text => setCategoryValue(text)}
-            value={isEdit ? categoryValue : null}
-          />
+              setvisible(true);
+            }}>
+            <View>
+              <Text>{categoryValue}</Text>
+            </View>
+          </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row', padding: 8, marginTop: 10}}>
           <View style={{justifyContent: 'center'}}>
@@ -307,7 +310,13 @@ export default function ValueEntry({route, navigation}) {
           </View>
         </TouchableOpacity>
       </View>
-      <SelectType />
+      <SelectType
+        visible={visible}
+        onBackdropPress={() => setvisible(false)}
+        onSelectItem={item => {
+          setCategoryValue(item.category_name), setvisible(false);
+        }}
+      />
     </SafeAreaView>
   );
 }

@@ -1,15 +1,26 @@
-import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Animated,
+  FlatList,
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {openDatabase} from 'react-native-sqlite-storage';
 import Modal from 'react-native-modal';
+import {NewIcons} from '../Utils/assets/Index';
 
-export default function SelectType() {
+export default function SelectType({visible, onBackdropPress, onSelectItem}) {
   // variables
   let db = openDatabase({name: 'AppData.db'});
 
   const [bounceValue, setBounceValue] = useState(new Animated.Value(300));
   const [categoryData, setCategoryData] = useState([]);
-  const [visible, setvisible] = useState(true);
+  // const [visible, setvisible] = useState(true);
   //Is the animated view hidden or not?
   const [isHidden, setIsHidden] = useState(true);
 
@@ -17,7 +28,7 @@ export default function SelectType() {
   const toggleSlide = () => {
     var toValue = 475; //How to get dynamic height of View to animate
 
-    if (isHidden) {
+    if (visible) {
       //Here I hide (slide down) the animated View container
       toValue = 0;
     }
@@ -58,13 +69,15 @@ export default function SelectType() {
       });
     });
   }, []);
+
   return (
     <Modal
       isVisible={visible}
       //   animationOut={'fadeOutDown'}
       style={{margin: 0}}
       onBackdropPress={() => {
-        setvisible(false);
+        // setvisible(false);
+        onBackdropPress();
         toggleSlide();
       }}>
       <Animated.View
@@ -74,29 +87,40 @@ export default function SelectType() {
           {
             padding: 10,
             position: 'absolute',
-            backgroundColor: 'red',
+            backgroundColor: 'white',
             bottom: 0,
             width: '100%',
+            height: '50%',
+            borderTopRightRadius: 25,
+            borderTopLeftRadius: 25,
           },
         ]}>
-        <View>
-          {categoryData.map((products, index) => {
-            return (
+        <FlatList
+          data={categoryData}
+          numColumns={3}
+          // style={{marginTop: 25}}
+          // style={{flexDirection: 'column', flexWrap: 'wrap'}}
+          renderItem={({item, index}) => (
+            <TouchableOpacity
+              style={{
+                width: '33.33%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: 5,
+              }}
+              onPress={() => onSelectItem(item)}>
               <View
                 style={{
-                  width: '100%',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: 5,
-                }}>
-                <Text style={{fontSize: 14, color: 'rgb(68,68,68)'}}>
-                  Product: {index + 1}
-                </Text>
-              </View>
-            );
-          })}
-        </View>
+                  height: 50,
+                  width: 50,
+                  borderRadius: 50,
+                  backgroundColor: '#f2f2f2',
+                }}></View>
+              <Text>{item.category_name}</Text>
+            </TouchableOpacity>
+          )}
+        />
+        <View style={{height: 20}} />
       </Animated.View>
     </Modal>
   );

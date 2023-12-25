@@ -122,24 +122,51 @@ export default function ListView({navigation, update, expData}) {
             padding: 10,
             borderBottomColor: 'grey',
             borderBottomWidth: 0.5,
+            flexDirection: 'row',
+            alignItems: 'center',
           }}>
-          <Text style={{fontSize: 16}}>
-            {moment(new Date()).format('DD MMM, YYYY') ==
-            moment(item.date).format('DD MMM, YYYY')
-              ? 'Today'
-              : moment(
-                  new Date(new Date().setDate(new Date().getDate() - 1)),
-                ).format('DD MMM, YYYY') ==
-                moment(item.date).format('DD MMM, YYYY')
-              ? 'Yesterday'
-              : moment(item.date).format('DD MMM, YYYY')}
-          </Text>
-          <Text>
-            {item.children.reduce(
-              (a, b) => (b.cashIn ? a + b.amount : a - b.amount),
-              0,
-            )}
-          </Text>
+          <View
+            style={{
+              // justifyContent: 'center',
+              // alignItems: 'center',
+              width: '80%',
+              // backgroundColor: 'red',
+            }}>
+            <Text style={{fontSize: 16}}>
+              {moment(new Date()).format('DD MMM, YYYY') ==
+              moment(item.date).format('DD MMM, YYYY')
+                ? 'Today'
+                : moment(
+                    new Date(new Date().setDate(new Date().getDate() - 1)),
+                  ).format('DD MMM, YYYY') ==
+                  moment(item.date).format('DD MMM, YYYY')
+                ? 'Yesterday'
+                : moment(item.date).format('DD MMM, YYYY')}
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              // backgroundColor: 'green',
+              width: '20%',
+            }}>
+            <Text
+              style={{
+                color: item.children
+                  .reduce((a, b) => (b.cashIn ? a + b.amount : a - b.amount), 0)
+                  .toString()
+                  .split('')
+                  .includes('-')
+                  ? 'red'
+                  : 'green',
+              }}>
+              {item.children.reduce(
+                (a, b) => (b.cashIn ? a + b.amount : a - b.amount),
+                0,
+              )}
+            </Text>
+          </View>
         </View>
         <View style={{paddingVertical: 5}}>
           {item.children.map((item1, index1) => {

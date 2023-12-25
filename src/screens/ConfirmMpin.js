@@ -48,10 +48,12 @@ export default function ConfirmMpin({route, navigation}) {
             if (setPin.join('') == pinArray.join('')) {
               setPinArray([]);
               AsyncStorage.setItem('MPIN', pinArray.join(''));
-              navigation.reset({
-                index: 0,
-                routes: [{name: 'Drawer'}],
-              });
+              setTimeout(() => {
+                navigation.reset({
+                  index: 0,
+                  routes: [{name: 'Drawer'}],
+                });
+              }, 500);
             } else {
               // ToastMsg("Mpin doesn't Match", 'error');
               setTimeout(() => {
@@ -66,10 +68,12 @@ export default function ConfirmMpin({route, navigation}) {
             let MPIN_FROM_ASYNC = await AsyncStorage.getItem('MPIN');
             console.log('MPIN_FROM_ASYNC', MPIN_FROM_ASYNC);
             if (MPIN_FROM_ASYNC == pinArray.join('')) {
-              navigation.reset({
-                index: 0,
-                routes: [{name: 'Drawer'}],
-              });
+              setTimeout(() => {
+                navigation.reset({
+                  index: 0,
+                  routes: [{name: 'Drawer'}],
+                });
+              }, 500);
             } else {
               console.log('wrong mpinnnnnnnnn');
               setTimeout(() => {

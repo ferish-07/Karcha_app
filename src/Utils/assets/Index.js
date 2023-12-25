@@ -8,3 +8,7 @@ export const assets = {
   errorIcon: require('../assets/Images/ErrorIcon.png'),
   warningIcon: require('../assets/Images/WarningIcon.png'),
 };
+
+export const NewIcons = {
+  groceries: require('../assets/Items/Groceries.png'),
+};

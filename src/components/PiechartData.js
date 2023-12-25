@@ -12,6 +12,7 @@ const generatePieChartData = () => {
     data.push({
       percent,
       color: getRandomColor(),
+      value: item[i],
     });
   }
   return data;

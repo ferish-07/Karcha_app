@@ -20,6 +20,8 @@ export const PieChartSegment = ({
   angle,
   percent,
   progress,
+  item,
+  onPress,
 }) => {
   console.log(
     'abgsdfabgsfjagsdjbasjkdbakjsbdjkasbdjkasbdjkabsdjbasd',
@@ -56,12 +58,14 @@ export const PieChartSegment = ({
       originX={center}
       originY={center}
       animatedProps={animatedProps}
+      onPress={() => onPress(item.value)}
     />
   );
 };
 
 export const PieChart = ({size = 200, strokeWidth = 50}) => {
   const progress = useSharedValue(0);
+  const [displayValue, setDisplayValue] = useState('');
   const [data, setData] = React.useState([]);
   const [startAngles, setStartAngles] = React.useState([]);
   const center = size / 2;
@@ -77,6 +81,7 @@ export const PieChart = ({size = 200, strokeWidth = 50}) => {
     });
     setData(generatedData);
     setStartAngles(angles);
+    // setDisplayValue()
     progress.value = 0;
     progress.value = withTiming(1, {
       duration: 1000,
@@ -86,13 +91,31 @@ export const PieChart = ({size = 200, strokeWidth = 50}) => {
     refresh();
   }, []);
   return (
-    <View style={{}}>
+    <View style={styles.container}>
       <Text style={styles.titleStyle}>Pie Chart</Text>
       <View
         style={[
           {width: size, height: size, alignSelf: 'center'},
           styles.rotate,
         ]}>
+        <View
+          style={[
+            // styles.buttonWrap,
+            styles.rotateText,
+            StyleSheet.absoluteFillObject,
+
+            {
+              // backgroundColor: 'red',
+              justifyContent: 'center',
+              // alignSelf: 'center',
+              alignItems: 'center',
+              borderRadius: 100,
+              // width: 50,
+              // height: 50,
+            },
+          ]}>
+          <Text>{displayValue}</Text>
+        </View>
         <Svg viewBox={`0 0 ${size} ${size}`} style={StyleSheet.absoluteFill}>
           {data.map((item, index) => (
             <PieChartSegment
@@ -101,21 +124,15 @@ export const PieChart = ({size = 200, strokeWidth = 50}) => {
               radius={radius}
               circumference={circumference}
               angle={startAngles[index]}
-              color={item.color + 45}
+              color={item.color}
               percent={item.percent}
               strokeWidth={strokeWidth}
               progress={progress}
+              item={item}
+              onPress={item => setDisplayValue(item)}
             />
           ))}
         </Svg>
-        <View
-          style={[
-            styles.buttonWrap,
-            styles.rotateText,
-            {backgroundColor: 'red'},
-          ]}>
-          <Button title="Refresh" onPress={refresh} />
-        </View>
       </View>
     </View>
   );
@@ -137,7 +154,5 @@ const styles = StyleSheet.create({
   buttonWrap: {marginTop: 20},
   container: {
     ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });

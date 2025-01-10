@@ -334,34 +334,48 @@ export default function AddCategory({navigation}) {
                   // justifyContent: 'center',
                   // alignSelf: 'center',
                 }}>
-                <TextInput
-                  ref={ref => {
-                    textInputRef[index] = ref;
-                  }}
-                  // onBlur={() => textInputRef[index].blur()}
+                {item.isEdited ? (
+                  <TextInput
+                    ref={ref => {
+                      textInputRef[index] = ref;
+                    }}
+                    // onBlur={() => textInputRef[index].blur()}
 
-                  value={item.category_name}
-                  onChangeText={text => {
-                    categoryData.map(i => {
-                      if (item.id == i.id) {
-                        item.category_name = text;
-                      }
-                    });
-                    setCategoryValue(text);
-                    setRefreshView(refreshView + 1);
-                  }}
-                  editable={item.isEdited ? true : false}
-                  multiline
-                  scrollEnabled={false}
-                  autoFocus={true}
-                  // numberOfLines={2}
-                  style={{
-                    fontSize: 18,
-                    // backgroundColor: 'red',/
-                    paddingVertical: 0,
-                    color: 'black',
-                  }}
-                />
+                    value={item.category_name}
+                    onChangeText={text => {
+                      categoryData.map(i => {
+                        if (item.id == i.id) {
+                          item.category_name = text;
+                        }
+                      });
+                      setCategoryValue(text);
+                      setRefreshView(refreshView + 1);
+                    }}
+                    editable={item.isEdited ? true : false}
+                    multiline
+                    scrollEnabled={false}
+                    autoFocus={true}
+                    // numberOfLines={2}
+                    style={{
+                      fontSize: 18,
+                      // backgroundColor: 'red',/
+                      paddingVertical: 0,
+                      color: 'black',
+                    }}
+                  />
+                ) : (
+                  <View style={{paddingVertical: 5}}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        // backgroundColor: 'red',/
+                        paddingVertical: 0,
+                        color: 'black',
+                      }}>
+                      {item.category_name}
+                    </Text>
+                  </View>
+                )}
                 {item.isEdited ? (
                   <View
                     style={{

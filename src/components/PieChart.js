@@ -21,12 +21,8 @@ export const PieChartSegment = ({
   percent,
   progress,
   item,
-  onPress,
+  // onPress,
 }) => {
-  console.log(
-    'abgsdfabgsfjagsdjbasjkdbakjsbdjkasbdjkasbdjkabsdjbasd',
-    generatePieChartData(),
-  );
   const [text, setText] = useState('Hello, world!');
 
   const animatedProps = useAnimatedProps(() => {
@@ -48,22 +44,24 @@ export const PieChartSegment = ({
     };
   });
   return (
-    <AnimatedCircle
-      cx={center}
-      cy={center}
-      r={radius}
-      strokeWidth={strokeWidth}
-      stroke={color}
-      strokeDasharray={circumference}
-      originX={center}
-      originY={center}
-      animatedProps={animatedProps}
-      onPress={() => onPress(item.value)}
-    />
+    <>
+      <AnimatedCircle
+        cx={center}
+        cy={center}
+        r={radius}
+        strokeWidth={strokeWidth}
+        stroke={color}
+        strokeDasharray={circumference}
+        originX={center}
+        originY={center}
+        animatedProps={animatedProps}
+        onPress={() => console.log('------', item)}
+      />
+    </>
   );
 };
 
-export const PieChart = ({size = 200, strokeWidth = 50}) => {
+export const PieChart = ({size = 200, strokeWidth = 50, amountData}) => {
   const progress = useSharedValue(0);
   const [displayValue, setDisplayValue] = useState('');
   const [data, setData] = React.useState([]);
@@ -72,7 +70,7 @@ export const PieChart = ({size = 200, strokeWidth = 50}) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const refresh = () => {
-    const generatedData = generatePieChartData();
+    const generatedData = generatePieChartData(amountData);
     let angle = 0;
     const angles = [];
     generatedData.forEach(item => {
@@ -118,19 +116,21 @@ export const PieChart = ({size = 200, strokeWidth = 50}) => {
         </View>
         <Svg viewBox={`0 0 ${size} ${size}`} style={StyleSheet.absoluteFill}>
           {data.map((item, index) => (
-            <PieChartSegment
-              key={`${item.color}-${index}`}
-              center={center}
-              radius={radius}
-              circumference={circumference}
-              angle={startAngles[index]}
-              color={item.color}
-              percent={item.percent}
-              strokeWidth={strokeWidth}
-              progress={progress}
-              item={item}
-              onPress={item => setDisplayValue(item)}
-            />
+            <>
+              <PieChartSegment
+                key={`${item.color}-${index}`}
+                center={center}
+                radius={radius}
+                circumference={circumference}
+                angle={startAngles[index]}
+                color={item.color}
+                percent={item.percent}
+                strokeWidth={strokeWidth}
+                progress={progress}
+                item={item}
+                onPress={i => console.log('itemmmmmmmmm------------', i)}
+              />
+            </>
           ))}
         </Svg>
       </View>
@@ -153,6 +153,6 @@ const styles = StyleSheet.create({
   },
   buttonWrap: {marginTop: 20},
   container: {
-    ...StyleSheet.absoluteFillObject,
+    // ...StyleSheet.absoluteFillObject,
   },
 });

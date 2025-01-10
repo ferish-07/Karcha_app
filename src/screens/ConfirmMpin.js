@@ -25,7 +25,7 @@ export default function ConfirmMpin({route, navigation}) {
     ['AC', 0, 'c'],
   ];
   const [pinArray, setPinArray] = useState([]);
-  const [refreshView, setrefreshView] = useState(0);
+const [refreshView, setrefreshView] = useState(0);
   let arr = [];
   const pinView = [1, 2, 3, 4];
   const onPressedPin = async item => {

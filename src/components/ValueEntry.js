@@ -44,11 +44,18 @@ export default function ValueEntry({route, navigation}) {
   }, []);
 
   const addData = (category, amount, date, note) => {
+    console.log('----', category, amount, date);
     let value = cashIn ? true : false;
     db.transaction(function (tx) {
       tx.executeSql(
         'INSERT INTO Expense (category, amount, dateTime, Note, cashIn) VALUES (?,?,?,?,?)',
-        [category, amount, date, note, value],
+        [
+          category.toString(),
+          amount.toString(),
+          date.toString(),
+          note.toString(),
+          value,
+        ],
         (tx, results) => {
           // console.log('Results------------', results.rowsAffected);
           if (results.rowsAffected > 0) {

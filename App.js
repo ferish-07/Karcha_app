@@ -4,6 +4,7 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
+  StatusBar,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 
@@ -17,6 +18,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 export default function App() {
   return (
     <GestureHandlerRootView style={{flex: 1}}>
+      <StatusBar hidden={true} />
       <Route />
       <NotificationService />
       <SqlLite />

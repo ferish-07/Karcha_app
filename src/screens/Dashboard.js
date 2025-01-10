@@ -23,7 +23,7 @@ export default function Dashboard({navigation}) {
   const toastRef = useRef();
   let db = openDatabase({name: 'AppData.db'});
   const [isLoading, setIsLoading] = useState(true);
-
+  const [amountArray, setAmmountArray] = useState([]);
   const [update, setupdate] = useState(0);
   const [expData, setExpData] = useState([]);
   const calculation = item => {
@@ -32,68 +32,7 @@ export default function Dashboard({navigation}) {
     setCashOut(item.cashOut);
   };
   // const [isLoading,setIsLoading]= useState(false)
-  useEffect(() => {
-    const sub = navigation.addListener('focus', () => {
-      setIsLoading(true);
-      db.transaction(tx => {
-        tx.executeSql('SELECT * FROM Expense', [], (tx, results) => {
-          // console.log('rows00000------  FOCUSSSSS-----------', results.rows.item(0));
-          var tempFrom = [];
-          var tempTo = [];
-          for (let i = 0; i < results.rows.length; ++i) {
-            // if (results.rows.item(i).type == 'from') {
-            //   tempFrom.push(results.rows.item(i));
-            // } else if (results.rows.item(i).type == 'to') {
-            //   tempTo.push(results.rows.item(i));
-            // }
-            tempTo.push(results.rows.item(i));
-            console.log(results.rows.item(i));
-          }
-          const newData = tempTo.reduce((acc, item) => {
-            const existingDate = acc.find(
-              entry =>
-                moment(entry.date).format('YYYY-MM-DD') ===
-                moment(item.dateTime).format('YYYY-MM-DD'),
-            );
-            if (existingDate) {
-              existingDate.children.push(item);
-            } else {
-              acc.push({date: item.dateTime, children: [item]});
-            }
-            return acc;
-          }, []);
-          newData.sort((a, b) => {
-            var dateA = new Date(a.date);
-            var dateB = new Date(b.date);
-            // console.log("-------DATEEEE A-------", dateA, a.date);
-            return dateB - dateA;
-          });
-          let negAmt = 0;
-          let posAmt = 0;
-          newData.map(i => {
-            i.children.map(i2 => {
-              if (i2.cashIn) {
-                posAmt = posAmt + i2.amount;
-              } else {
-                negAmt = negAmt + i2.amount;
-              }
-            });
-          });
-          setExpData(newData);
-          calculation({cashIn: posAmt, cashOut: negAmt});
-          console.log('---------------TEMP DATAAA', tempTo);
-          // setAddressesFrom(tempFrom);
-          // setAddressesTo(tempTo);
-        });
-      });
-      setIsLoading(false);
-    });
-    return () => {
-      sub;
-    };
-  }, [navigation]);
-
-  useEffect(() => {
+  const apiCall = () => {
     setIsLoading(true);
     db.transaction(tx => {
       tx.executeSql('SELECT * FROM Expense', [], (tx, results) => {
@@ -109,6 +48,11 @@ export default function Dashboard({navigation}) {
           tempTo.push(results.rows.item(i));
           console.log(results.rows.item(i));
         }
+        let amounts = [];
+        tempTo.map(i => {
+          amounts.push(i.amount);
+        });
+        amounts.sort((a, b) => b - a);
         const newData = tempTo.reduce((acc, item) => {
           const existingDate = acc.find(
             entry =>
@@ -141,14 +85,26 @@ export default function Dashboard({navigation}) {
           });
         });
         setExpData(newData);
+        setAmmountArray(amounts);
         calculation({cashIn: posAmt, cashOut: negAmt});
 
-        console.log('---------------TEMP DATAAA', tempTo);
         // setAddressesFrom(tempFrom);
         // setAddressesTo(tempTo);
       });
     });
     setIsLoading(false);
+  };
+  useEffect(() => {
+    const sub = navigation.addListener('focus', () => {
+      apiCall();
+    });
+    return () => {
+      sub;
+    };
+  }, [navigation]);
+
+  useEffect(() => {
+    apiCall();
   }, []);
   const [userData, setUserData] = useState(null);
   const [cashIn, setCashIn] = useState(0);
@@ -367,7 +323,7 @@ export default function Dashboard({navigation}) {
           </View>
         )
       ) : null}
-      {currentTab == 'Overview' ? <Overview /> : null}
+      {currentTab == 'Overview' ? <Overview amountData={amountArray} /> : null}
     </View>
   );
 }

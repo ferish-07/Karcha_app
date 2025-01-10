@@ -73,6 +73,7 @@ export default function SelectType({visible, onBackdropPress, onSelectItem}) {
   return (
     <Modal
       isVisible={visible}
+      statusBarTranslucent
       //   animationOut={'fadeOutDown'}
       style={{margin: 0}}
       onBackdropPress={() => {
